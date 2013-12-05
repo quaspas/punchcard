@@ -31,7 +31,7 @@ USERNAME = 'EDIT ME'
 PASSWORD = 'EDIT ME'
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
-    browser = webdriver.PhantomJS('./phantomjs')
+    browser = webdriver.Firefox()
     browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
     print day_offset
     print overtime
@@ -50,7 +50,7 @@ def nine_to_five(username, password, day_offset=0, overtime=0):
     start = '{} {}'.format(day.strftime('%x'), '09:00')
     # overtime only added in hour blocks
     out = 16 + overtime
-    stop = '{} {}'.format(day.strftime('%x'), '{}:00'.format(out))
+    stop = '{} {}'.format(day.strftime('%x'), '{}:30'.format(out))
 
     # enter start date/time
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_pStart').clear()
