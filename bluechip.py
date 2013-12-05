@@ -33,8 +33,6 @@ PASSWORD = 'EDIT ME'
 def nine_to_five(username, password, day_offset=0, overtime=0):
     browser = webdriver.Firefox()
     browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
-    print day_offset
-    print overtime
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_LogIn').click()
 
     #login here
