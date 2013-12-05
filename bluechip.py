@@ -67,6 +67,7 @@ def run():
         '-d', '--days',
         action='store',
         default= 0,
+        type='int',
         dest='day_offset',
         help='If you forgot to clock yesterday pass 1, two days ago pass 2 etc.'
     )
@@ -74,6 +75,7 @@ def run():
         '-o', '--overtime',
         action='store',
         default= 0,
+        type='int',
         dest='overtime',
         help='add overtime in hour blocks pass 1, or subtract time in hour blocks pass -1',
     )
