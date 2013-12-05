@@ -27,8 +27,8 @@ from selenium import webdriver
 from selenium.webdriver.support.select import Select
 import sys
 
-USERNAME = 'EDIT ME'
-PASSWORD = 'EDIT ME'
+USERNAME = ''
+PASSWORD = ''
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
     browser = webdriver.Firefox()
@@ -44,10 +44,10 @@ def nine_to_five(username, password, day_offset=0, overtime=0):
     select = browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_ddTask')
     Select(select).select_by_value('2777')
 
-    day = datetime.date.today() - timedelta(days=day_offset)
+    day = datetime.date.today() - timedelta(days=int(day_offset))
     start = '{} {}'.format(day.strftime('%x'), '09:00')
     # overtime only added in hour blocks
-    out = 16 + overtime
+    out = 16 + int(overtime)
     stop = '{} {}'.format(day.strftime('%x'), '{}:30'.format(out))
 
     # enter start date/time
