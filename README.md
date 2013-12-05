@@ -10,7 +10,7 @@ uses selenium and phantomjs.
 
 Install selenium:
 
-    > pip install -U selenium
+    > pip install selenium==2.37.2
 
 
 You will need to modify `bluechip.py` by adding your username and password.
@@ -28,8 +28,8 @@ Examples:
 
     > python bluechip.py
 
-This will log 7 hours for today.
+This will log 7.5 hours for today.
 
     > python bluechip.py -d1 -o1
 
-This will log 8 hours in bluechip for yesterday.
+This will log 8.5 hours in bluechip for yesterday.

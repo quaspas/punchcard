@@ -31,14 +31,17 @@ USERNAME = ''
 PASSWORD = ''
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
-    browser = webdriver.Firefox()
+
+    browser = webdriver.PhantomJS('./phantomjs')
     browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
+
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_LogIn').click()
 
     #login here
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_tName').send_keys(username)
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_tPassword').send_keys(password)
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_bSubmit').click()
+    print 'logged in...'
 
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_tJob').send_keys('59950')
     select = browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_ddTask')
@@ -58,8 +61,10 @@ def nine_to_five(username, password, day_offset=0, overtime=0):
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_pStop').send_keys(stop)
     # insert
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_bAddTrans').click()
+    print 'inserted time block...'
     # done
     browser.quit()
+    print 'Done.'
 
 def run():
     parser = OptionParser(usage="Usage: python %prog --days=<days to go back> --overtime=<hours above or below the regualar 7>")
