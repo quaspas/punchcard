@@ -31,7 +31,7 @@ USERNAME = ''
 PASSWORD = ''
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
-
+    print 'loging in...'
     browser = webdriver.PhantomJS('./phantomjs')
     browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
 
@@ -61,7 +61,7 @@ def nine_to_five(username, password, day_offset=0, overtime=0):
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_pStop').send_keys(stop)
     # insert
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_bAddTrans').click()
-    print 'inserted time block...'
+    print 'inserted {} hours for {}'.format(out-9.5, day.strftime('%A %B %d'))
     # done
     browser.quit()
     print 'Done.'
