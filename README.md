@@ -3,7 +3,8 @@ Punch Card
 
 Automated bluechip transaction inserting.
 
-* This code makes the assumption you are always 'clocked in' *
+IMPORTANT:
+This code makes the assumption you are always 'clocked in'
 
 uses selenium and phantomjs.
 
@@ -12,7 +13,7 @@ Install selenium:
     > pip install -U selenium
 
 
-You will need to modify `bluechip.py` file by adding your username and password.
+You will need to modify `bluechip.py` by adding your username and password.
 
 To run:
 
