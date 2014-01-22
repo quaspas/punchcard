@@ -31,7 +31,7 @@ USERNAME = ''
 PASSWORD = ''
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
-    print 'loging in...'
+    print 'logging in...'
     browser = webdriver.PhantomJS('./phantomjs')
     browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
 
