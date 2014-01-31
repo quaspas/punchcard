@@ -6,12 +6,12 @@ Automated bluechip transaction inserting.
 IMPORTANT:
 This code makes the assumption you are always 'clocked in'
 
-Uses selenium and phantomjs.
+Uses selenium, chromedriver and phantomjs.
 
 Install selenium:
 
     > pip install selenium==2.37.2
-
+    > brew install chromedriver
 
 You will need to modify `bluechip.py` by adding your username and password.
 
