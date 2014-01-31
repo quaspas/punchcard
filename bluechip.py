@@ -20,24 +20,48 @@ This will log 8 hours in bluechip for yesterday.
 
 """
 
-import datetime
+import datetime, subprocess, sys, os, glob, time
 from datetime import timedelta
 from optparse import OptionParser
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
-import sys
 
-USERNAME = ''
-PASSWORD = ''
+# add a localsettings.py file and place your username and password in there
+# USERNAME = 'username'
+# PASSWORD = 'password'
+#
+# To use the -a -all you need to add a list of lists of usernames and passwords
+# username_password = [ ['username1' , 'password1'] , ['username2' , 'password2'] ]
+
+
+try:
+    from localsettings import *
+except ImportError:
+    # go add these in a localsettings.py!
+    USERNAME = ''
+    PASSWORD = ''
+    # username_password = [ ['username1' , 'password1'] , ['username2' , 'password2'] ]
+    username_password = [['', ''],['', ''], ]
+    pass
+
 
 def nine_to_five(username, password, day_offset=0, overtime=0):
-    print 'loging in...'
-    browser = webdriver.PhantomJS('./phantomjs')
-    browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
 
+    # delete and old time sheets in the download folder
+    map(os.unlink, glob.glob(os.path.expanduser('~/Downloads/EmployeeTime*.PDF')))
+
+    # browser = webdriver.PhantomJS('./phantomjs')
+    # browser = webdriver.Firefox()
+
+    # currently chrome is the only one that we can download the file with
+    browser = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
+
+    # go to bluechip login page
+    browser.get('https://prodnetapp01.pimedia.com/lago/Default.aspx')
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_LogIn').click()
 
     #login here
+    print 'logging in as {}...'.format(username)
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_tName').send_keys(username)
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_tPassword').send_keys(password)
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_bSubmit').click()
@@ -61,10 +85,20 @@ def nine_to_five(username, password, day_offset=0, overtime=0):
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_pStop').send_keys(stop)
     # insert
     browser.find_element_by_id('ctl00_ContentPlaceHolder1_UserTrans_FormView1_bAddTrans').click()
-    print 'inserted {} hours for {}'.format(out-9.5, day.strftime('%A %B %d'))
-    # done
+    print 'inserted {} hours for {}'.format(out-8.5, day.strftime('%A %B %d'))
+
+    # we want to now print the sheet
+    # press the print button
+    browser.find_element_by_id('ctl00_ContentPlaceHolder1_bPrint').click()
+    # need to wait a second for it to download
+    time.sleep(2)
+
+    # grab the time sheet file
+    file = glob.glob(os.path.expanduser('~/Downloads/EmployeeTime*.PDF'))
+    subprocess.call(['lpr', '-#1', '-l', '-r', '{}'.format(file[0])])
+    print '{}\'s time sheet printed.'.format(username)
     browser.quit()
-    print 'Done.'
+
 
 def run():
     parser = OptionParser(usage="Usage: python %prog --days=<days to go back> --overtime=<hours above or below the regualar 7>")
@@ -84,8 +118,22 @@ def run():
         dest='overtime',
         help='add overtime in hour blocks pass 1, or subtract time in hour blocks pass -1',
     )
+    parser.add_option(
+        '-a', '--all',
+        action='store_true',
+        dest='punch_all',
+        default=False,
+        help='will punch in all users.'
+    )
+
     options, args = parser.parse_args(args=sys.argv)
-    nine_to_five(USERNAME, PASSWORD, day_offset=options.day_offset, overtime=options.overtime)
+
+    if options.punch_all:
+        for user, pw in username_password:
+            nine_to_five(user, pw, day_offset=options.day_offset, overtime=options.overtime)
+    else:
+        nine_to_five(USERNAME, PASSWORD, day_offset=options.day_offset, overtime=options.overtime)
+
 
 if __name__ == '__main__':
     run()
